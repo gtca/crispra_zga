@@ -1,0 +1,66 @@
+from glob import glob
+from os.path import basename
+
+from snakemake.utils import validate
+
+configfile: "workflow/configs/main.yaml"
+
+rule all:
+  input:
+    expand("data/interim/main/amplicon/{lane}_barcodes_with_guides.csv", lane=[basename(i).replace("_R3.fastq.gz", "") for i in glob("data/raw/main/scrnaseq/amplicon/lane*R3*gz")])
+
+rule assign_guides_to_barcodes:
+  input:
+    list_of_guides = "data/raw/main/tables/zga_main_sgrnas.csv",
+    r3_file = "data/raw/main/scrnaseq/amplicon/{lane}_R3.fastq.gz",
+    r1_file = "data/raw/main/scrnaseq/amplicon/{lane}_R1.fastq.gz",
+    barcodes_file = "data/raw/main/scrnaseq/transcriptome/SIGAA10/outs/raw_gene_bc_matrices/mm10/barcodes.tsv"
+  output:
+    "data/interim/main/amplicon/{lane}_barcodes_with_guides.csv"
+  script:
+    "src/preprocessing/assign_guides_to_barcodes.py"
+
+
+
+# Transcriptome
+## 10X Genomocs, 3-prime
+
+rule create_anndata:
+  input:
+    "data/raw/main/scrnaseq/transcriptome/",
+    "data/raw/main/tables/samples_barcodes.csv"
+  output:
+    "data/interim/main/transcriptome/expr_raw.h5ad"
+  script:
+    "src/data/create_anndata.py"
+
+
+rule preprocess_with_scanpy:
+  input:
+    "data/interim/main/transcriptome/expr_raw.h5ad"
+  output:
+    hvg = "data/interim/main/transcriptome/expr_preproc.hvg.h5ad"
+  script:
+    "src/preprocessing/preprocess_with_scanpy_hvg.py"
+
+
+
+rule analyse_with_scanpy:
+  input:
+    "data/interim/main/transcriptome/expr_preproc.hvg.h5ad"
+  output:
+    "data/interim/main/transcriptome/expr.hvg.h5ad"
+  script:
+    "src/analysis/analyse_with_scanpy.py"
+
+
+rule add_guides:
+  input:
+    "data/interim/main/transcriptome/expr.hvg.h5ad",
+    "data/raw/main/tables/zga_main_sgrnas.csv",
+    "data/interim/main/amplicon/barcodes_with_guides.csv"
+  output:
+    "data/interim/main/expr_with_guides.hvg.h5ad"
+  script:
+    "src/analysis/add_guides.py"
+
