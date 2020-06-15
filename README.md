@@ -13,3 +13,9 @@ Original tables such as a list of sgRNAs can be found in [`data/raw/main/tables`
 ## Processing
 
 Main processing steps are described in the `workflow/Snakefile`, which is also symlinked in the root folder. Processing scripts are to be found in the `src` folder and its subfolders.
+
+## Repeat elements quantification
+
+FASTA files with repeat elements sequences per family are located in `data/external/repeats`. Due to their filesize, the files are not present in this repository but can obtained on figshare
+
+FASTQ files with cell barcodes are created from the unmapped reads of the BAM files in the Cell Ranger output and are then mapped to those families. Only reads mapped to a respective family are kept for downstream quantification.
