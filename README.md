@@ -16,6 +16,6 @@ Main processing steps are described in the `workflow/Snakefile`, which is also s
 
 ## Repeat elements quantification
 
-FASTA files with repeat elements sequences per family are located in `data/external/repeats`. Due to their filesize, the files are not present in this repository but can obtained on figshare
+FASTA files with repeat elements sequences per family are located in `data/external/repeats`. Due to their filesize, the files are not present in this repository and can be obtained [from figshare](https://figshare.com/s/24f9a37e19fed9258338).
 
 FASTQ files with cell barcodes are created from the unmapped reads of the BAM files in the Cell Ranger output and are then mapped to those families. Only reads mapped to a respective family are kept for downstream quantification.
