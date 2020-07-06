@@ -1,0 +1,37 @@
+data:
+  transcriptome:
+    scanpy:
+      options:
+        exclude_samples:
+      statlog: "workflow/statlogs/data/main_transcriptome_scanpy.yaml"
+
+preprocessing:
+  amplicon:
+    options:
+    statlog: "workflow/statlogs/preprocessing/amplicon_guides_assignment_LANE.yaml"
+  transcriptome:
+    scanpy:
+      options:
+        min_counts_per_cell:  4000  # Minimum number of UMIs per cell to filter cells
+        max_counts_per_cell:  20000 # Maximum number of UMIs per cell to filter cells
+        min_cells_per_gene:   10    # Minimum number of cells where gene is expressed to filter genes
+        min_genes_per_cell:   1600  # Minimum number of genes per cell to filter cells
+        max_genes_per_cell:   5000  # Maximum number of genes per cell to filter cells
+        max_mito_threshold:   0.05  # Maximum fraction of mitochondrial reads per cell to filter cells
+        counts_per_cell_norm: 1e4  # Number of counts per cell after normalisation
+      statlog: "workflow/statlogs/preprocessing/transcriptome_main_scanpy.yaml"
+
+
+analysis:
+  transcriptome:
+    scanpy:
+      options:
+        lovain_resolution: 1.0   # Louvain resolution parameter
+        rank_genes_groups_method: 't-test_overestim_var'
+      statlog: "workflow/statlogs/analysis/transcriptome_main_scanpy.yaml"
+  add_guides:
+    scanpy:
+      options:
+        min_sgrna_frac:    0.9
+        max_sgrna_frac_se: 0.1
+      statlog: "workflow/statlogs/analysis/add_guides.yaml"
