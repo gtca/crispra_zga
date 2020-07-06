@@ -13,7 +13,7 @@ import types
 import numpy as np
 import scipy as sp
 import pandas as pd
-import scanpy.api as sc
+import scanpy as sc
 
 import matplotlib.pyplot as plt
 import seaborn as sns
