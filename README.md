@@ -11,7 +11,7 @@ Raw data is of two main types: global transcriptome read-out (scRNA-seq, 10X Gen
 Filtered cell barcodes as defined by Cell Ranger are made available [here on figshare](https://figshare.com/s/50500c2216d7ba617876):
 
 ```
-curl 'https://ndownloader.figshare.com/articles/13393214/versions/1' -o GSE135621_filtered_barcodes.zip
+curl 'https://ndownloader.figshare.com/articles/13393214/versions/1' -o filtered_barcodes.zip
 ```
 
 Original tables such as a list of sgRNAs can be found in [`data/raw/main/tables`](data/raw/main/tables) folder.
